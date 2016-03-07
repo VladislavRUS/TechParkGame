@@ -1,6 +1,6 @@
 package com.vlad.servlets;
 
-import com.vlad.services.AccountService;
+import com.vlad.interfaces.AccountService;
 import com.vlad.util.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -32,7 +32,7 @@ public class ServletSignIn extends HttpServlet{
 
         if(accountService.userExists(login, password, userSession)){
             map.put("login", login);
-            resp.getWriter().println(PageGenerator.getPage(map, "personal.html"));
+            resp.sendRedirect("/signin");
         }
         else{
             map.put("msg", "User was not found!");

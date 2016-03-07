@@ -1,6 +1,6 @@
 package com.vlad.servlets;
 
-import com.vlad.services.AccountService;
+import com.vlad.interfaces.AccountService;
 import com.vlad.util.PageGenerator;
 
 import javax.servlet.ServletException;

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to the chat!</title>
+
+</head>
+<body>
+    Welcome to the chat<br>
+
+    <input id="login" type="text" value="${login}" readonly><br><br>
+    <div>
+        <textarea id="chatbox" rows="16" cols="48"></textarea>
+    </div>
+    <form name="message">
+        <input id="msg" type="text"><br>
+        <input type="button" value="Send..." onclick="sendMessage();">
+    </form>
+    <a href="/">Main</a>
+</body>
+<script>
+        var ws = new WebSocket("ws://localhost:8080/socketchat");
+
+        ws.onopen = function(event){
+
+        }
+
+        ws.onmessage = function(event){
+            document.getElementById("chatbox").value += event.data + '\n';
+            document.getElementById("msg").value = "";
+        }
+
+        function sendMessage(){
+            var msg = document.getElementById('login').value+': ';
+            msg += document.getElementById("msg").value;
+            ws.send(msg);
+        }
+    </script>
+</html>

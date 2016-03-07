@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "userprofiles")
 public class UserProfile {
     @Id
-    @Column(columnDefinition = "serial")
+    @Column(columnDefinition = "serial", unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 

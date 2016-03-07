@@ -1,6 +1,5 @@
 package com.vlad.servlets;
 
-import com.vlad.models.UserProfile;
 import com.vlad.interfaces.AccountService;
 import com.vlad.util.PageGenerator;
 
@@ -13,28 +12,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Владислав on 28.02.2016.
+ * Created by Владислав on 07.03.2016.
  */
-public class InformationServlet extends HttpServlet{
-    public static final String INFORMATION_SERVLET_URL = "/information";
-
+public class ChatServlet extends HttpServlet{
     private AccountService accountService;
 
-    public InformationServlet(AccountService accountService){
+    public ChatServlet(AccountService accountService){
         this.accountService = accountService;
     }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String> map = new HashMap<>();
-        if(accountService.inCurrentSession(req.getSession())){
-            UserProfile profile = accountService.getUserBySession(req.getSession());
-            map.put("login", profile.getLogin());
-            map.put("password", profile.getPassword().toString());
-            resp.getWriter().println(PageGenerator.getPage(map, "information.html"));
+
+        if(accountService.inCurrentSession(req.getSession())) {
+            map.put("login", accountService.getUserBySession(req.getSession()).getLogin());
+            resp.getWriter().println(PageGenerator.getPage(map, "chat.html"));
         }
-        else{
-            map.put("msg", "You need to log in!");
+        else {
+            map.put("msg", "User was not found!");
             resp.getWriter().println(PageGenerator.getPage(map, "error.html"));
         }
     }

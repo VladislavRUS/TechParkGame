@@ -1,6 +1,7 @@
 package com.vlad.server;
 
-import com.vlad.services.AccountService;
+import com.vlad.interfaces.AccountService;
+import com.vlad.services.AccountServiceImpl;
 import com.vlad.servlets.*;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -15,9 +16,12 @@ import org.eclipse.jetty.servlet.ServletHolder;
 public class Start {
     public static void main(String[] args) throws Exception {
 
-        AccountService accountService = new AccountService();
+        AccountService accountService = new AccountServiceImpl();
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
+        //chat example
+        handler.addServlet(new ServletHolder(new WebSocketChatServlet()), "/socketchat");
+        handler.addServlet(new ServletHolder(new ChatServlet(accountService)), "/chat");
         handler.addServlet(new ServletHolder(new Frontend()), Frontend.FRONTED_URL);
         handler.addServlet(new ServletHolder(new DrawSignIn(accountService)), DrawSignIn.DRAW_SIGN_IN_URL);
         handler.addServlet(new ServletHolder(new DrawSignUp()), DrawSignUp.DRAW_SIGN_UP_URL);

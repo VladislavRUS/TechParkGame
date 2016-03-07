@@ -1,5 +1,6 @@
 package com.vlad.services;
 
+import com.vlad.interfaces.AccountService;
 import com.vlad.models.UserProfile;
 import com.vlad.util.HibernateUtil;
 import org.hibernate.Query;
@@ -13,9 +14,10 @@ import java.util.Map;
 /**
  * Created by Владислав on 26.02.2016.
  */
-public class AccountService {
+public class AccountServiceImpl implements AccountService {
     private static Map<HttpSession, UserProfile> currentSessions = Collections.synchronizedMap(new HashMap<HttpSession, UserProfile>());
 
+    @Override
     public boolean userExists(String login, char[] password, HttpSession session){
         Session ses = HibernateUtil.getSessionFactory().openSession();
         Query query = ses.createQuery("from UserProfile where login = :login");
@@ -37,6 +39,7 @@ public class AccountService {
         }
     }
 
+    @Override
     public boolean register(String login, char[] password, HttpSession session){
         Session ses = HibernateUtil.getSessionFactory().openSession();
         Query query = ses.createQuery("from UserProfile where login = :login");
@@ -62,6 +65,7 @@ public class AccountService {
         }
     }
 
+    @Override
     public boolean inCurrentSession(HttpSession session){
         if(currentSessions.containsKey(session)){
             return true;
@@ -71,10 +75,12 @@ public class AccountService {
         }
     }
 
+    @Override
     public UserProfile getUserBySession(HttpSession session){
         return currentSessions.get(session);
     }
 
+    @Override
     public void deleteUserSession(HttpSession session){
         currentSessions.remove(session);
     }
